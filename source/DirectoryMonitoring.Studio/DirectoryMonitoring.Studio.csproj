@@ -62,6 +62,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll</HintPath>
       <Private>False</Private>
@@ -96,6 +97,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Component\MonitoringInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Component\OutputInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Component\SelectDirectory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Component\Setting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,7 +123,27 @@
     </Compile>
     <Compile Include="Base\BaseViewModel.cs" />
     <Compile Include="Base\RelayCommand.cs" />
+    <Compile Include="Helper\AssemblyHelper.cs" />
+    <Compile Include="Helper\FileExplorerHelper.cs" />
+    <Compile Include="Helper\FileSystemDialogHelper.cs" />
+    <Compile Include="Message\NotifyOutputInfoComponentMessage.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MonitorInfoViewModel.cs" />
+    <Compile Include="ViewModel\OutputInfoViewModel.cs" />
+    <Compile Include="ViewModel\SelectDirectoryViewModel.cs" />
+    <Compile Include="ViewModel\SettingViewModel.cs" />
+    <Compile Include="View\Component\MonitoringInfo.xaml.cs">
+      <DependentUpon>MonitoringInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\OutputInfo.xaml.cs">
+      <DependentUpon>OutputInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\SelectDirectory.xaml.cs">
+      <DependentUpon>SelectDirectory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\Setting.xaml.cs">
+      <DependentUpon>Setting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -140,7 +177,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="View\Component\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\Icon.ico" />
