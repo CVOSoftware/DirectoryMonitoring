@@ -1,0 +1,21 @@
+﻿<metro:MetroWindow 
+    x:Class="DirectoryMonitoring.Studio.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:DirectoryMonitoring.Studio.View"
+    mc:Ignorable="d"
+    x:Name="Main"
+    Title="Directory monitor"
+    WindowStartupLocation="CenterScreen"
+    MinHeight="640"
+    Height="{Binding ElementName=Main, Path=MinHeight}"
+    MinWidth="1024"
+    Width="{Binding ElementName=Main, Path=MinWidth}"
+    Style="{StaticResource Style/MainWindow}">
+    <Grid>
+        
+    </Grid>
+</metro:MetroWindow>
