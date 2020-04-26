@@ -36,6 +36,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         public OutputInfoViewModel()
         {
             Messenger.Default.Register<NotifyOutputInfoComponentMessage>(this, ScanEndNotify);
+
             saveLogPath = CreateDefaultSaveLogDirectoryPath();
         }
 

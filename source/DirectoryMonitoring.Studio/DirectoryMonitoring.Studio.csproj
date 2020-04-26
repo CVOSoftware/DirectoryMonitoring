@@ -127,6 +127,7 @@
     <Compile Include="Helper\FileExplorerHelper.cs" />
     <Compile Include="Helper\FileSystemDialogHelper.cs" />
     <Compile Include="Message\NotifyOutputInfoComponentMessage.cs" />
+    <Compile Include="Message\NotifySelectDirComponentMessage.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MonitorInfoViewModel.cs" />
     <Compile Include="ViewModel\OutputInfoViewModel.cs" />
