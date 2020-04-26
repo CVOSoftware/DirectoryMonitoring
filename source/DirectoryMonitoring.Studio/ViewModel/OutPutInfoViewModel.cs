@@ -29,6 +29,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private string saveLogPath;
 
+        private string cacheSaveLogPath;
+
         #endregion
 
         #region Constructor
@@ -38,6 +40,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
             Messenger.Default.Register<NotifyOutputInfoComponentMessage>(this, ScanEndNotify);
 
             saveLogPath = CreateDefaultSaveLogDirectoryPath();
+            cacheSaveLogPath = saveLogPath;
         }
 
         #endregion
@@ -95,7 +98,26 @@ namespace DirectoryMonitoring.Studio.ViewModel
             return scanCompleted && informationToSave;
         }
 
-        #endregion 
+        #endregion
+
+        #region SetDefaultSavePath
+
+        private RelayCommand setDefaultSavePath;
+
+        public RelayCommand SetDefaultSavePath => RelayCommand.Register(ref setDefaultSavePath, OnSetDefault, CanSetDefault);
+
+        private void OnSetDefault(object commandParameter)
+        {
+            SaveLogPath = cacheSaveLogPath;
+        }
+
+        private bool CanSetDefault(object coomandParameter)
+        {
+            return saveLogPath.Equals(cacheSaveLogPath, StringComparison.OrdinalIgnoreCase) == false
+                   && saving == false;
+        }
+
+        #endregion
 
         #region SelectDirectoryCommand
 
