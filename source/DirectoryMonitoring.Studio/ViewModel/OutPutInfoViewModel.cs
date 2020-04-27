@@ -149,7 +149,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         #endregion
 
-        #region Private methods
+        #region Other methods
 
         private string CreateDefaultSaveLogDirectoryPath()
         {

@@ -126,8 +126,11 @@
     <Compile Include="Helper\AssemblyHelper.cs" />
     <Compile Include="Helper\FileExplorerHelper.cs" />
     <Compile Include="Helper\FileSystemDialogHelper.cs" />
+    <Compile Include="Message\AddLogItemMessage.cs" />
     <Compile Include="Message\NotifyOutputInfoComponentMessage.cs" />
     <Compile Include="Message\NotifySelectDirComponentMessage.cs" />
+    <Compile Include="Message\SelectMonitoringPathMessage.cs" />
+    <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MonitorInfoViewModel.cs" />
     <Compile Include="ViewModel\OutputInfoViewModel.cs" />
@@ -177,9 +180,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resource\Image\Icon.ico" />
   </ItemGroup>
@@ -188,12 +189,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <copy SourceFiles="..\packages\NLog.4.7.0\lib\net45\NLog.dll" DestinationFolder="$(OutDir)lib\NLog.4.7.0" />
-    <copy SourceFiles="..\packages\MVVMLight.Messaging.1.0.0.0\lib\net40\MVVMLight.Messaging.dll" DestinationFolder="$(OutDir)lib\MVVMLight.Messaging.1.0.0.0" />
-    <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll" DestinationFolder="$(OutDir)lib\ControlzEx.3.0.2.4" />
-    <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll" DestinationFolder="$(OutDir)lib\ControlzEx.3.0.2.4" />
-    <copy SourceFiles="..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll" DestinationFolder="$(OutDir)lib\MahApps.Metro.1.6.5" />
-    <copy SourceFiles="..\packages\MahApps.Metro.IconPacks.Material.4.0.0\lib\net47\MahApps.Metro.IconPacks.Core.dll" DestinationFolder="$(OutDir)lib\MahApps.Metro.IconPacks.Material.4.0.0" />
-    <copy SourceFiles="..\packages\MahApps.Metro.IconPacks.Material.4.0.0\lib\net47\MahApps.Metro.IconPacks.Material.dll" DestinationFolder="$(OutDir)lib\MahApps.Metro.IconPacks.Material.4.0.0" />
+    <copy SourceFiles="..\packages\NLog.4.7.0\lib\net45\NLog.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\MVVMLight.Messaging.1.0.0.0\lib\net40\MVVMLight.Messaging.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\MahApps.Metro.IconPacks.Material.4.0.0\lib\net47\MahApps.Metro.IconPacks.Core.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\MahApps.Metro.IconPacks.Material.4.0.0\lib\net47\MahApps.Metro.IconPacks.Material.dll" DestinationFolder="$(OutDir)lib" />
   </Target>
 </Project>

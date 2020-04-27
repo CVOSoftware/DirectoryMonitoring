@@ -31,7 +31,7 @@
                     Width="40" 
                     Height="40"
                     ToolTip="Start"
-                    Command="{Binding StartMonitoring}"
+                    Command="{Binding Start}"
                     Style="{StaticResource SquareButtonStyle}">
                     <metroIcon:Material Kind="Play" />
                 </Button>
@@ -41,7 +41,7 @@
                     Height="40"
                     Margin="10, 0"
                     ToolTip="Pause"
-                    Command="{Binding PauseMonitoring}"
+                    Command="{Binding Pause}"
                     Style="{StaticResource SquareButtonStyle}">
                     <metroIcon:Material Kind="Pause" />
                 </Button>
@@ -50,7 +50,7 @@
                     Width="40"
                     Height="40"
                     ToolTip="Stop"
-                    Command="{Binding StopMonitoring}"
+                    Command="{Binding Stop}"
                     Style="{StaticResource SquareButtonStyle}">
                     <metroIcon:Material Kind="Stop" />
                 </Button>
@@ -65,9 +65,49 @@
                 FontSize="18"
                 Content="Configuration panel"/>
             <CheckBox 
-                Margin="10, 0, 0, 0" 
-                IsChecked="False"
-                Content="Include sub-folder" />
+                Margin="10, 0, 0, 10"
+                IsEnabled="{Binding ScanCanceled}"
+                IsChecked="{Binding IncludeSubdirectories}"
+                Content="Include subdirectories" />
+            <CheckBox 
+                Margin="10, 0, 0, 10" 
+                IsEnabled="{Binding ScanCanceled}"
+                IsChecked="{Binding EnableRaisingEvents}"
+                Content="Enable raising events" />
+            <Separator
+                Margin="0, 20, 0, 10"
+                BorderThickness="0, 0, 0, 1" 
+                BorderBrush="{StaticResource AccentBaseColorBrush}"/>
+            <Label
+                Margin="0, 0, 0, 15"
+                Padding="0"
+                FontSize="18"
+                Content="Events panel"/>
+            <CheckBox 
+                Margin="10, 0, 0, 10" 
+                IsEnabled="{Binding ScanCanceled}"
+                IsChecked="{Binding IsChange}"
+                Content="Change" />
+            <CheckBox 
+                Margin="10, 0, 0, 10" 
+                IsEnabled="{Binding ScanCanceled}"
+                IsChecked="{Binding IsCreate}"
+                Content="Create" />
+            <CheckBox 
+                Margin="10, 0, 0, 10" 
+                IsEnabled="{Binding ScanCanceled}"
+                IsChecked="{Binding IsDelete}"
+                Content="Delete" />
+            <CheckBox 
+                Margin="10, 0, 0, 10"
+                IsEnabled="{Binding ScanCanceled}"
+                IsChecked="{Binding IsError}"
+                Content="Error" />
+            <CheckBox 
+                Margin="10, 0, 0, 10" 
+                IsEnabled="{Binding ScanCanceled}"
+                IsChecked="{Binding IsRename}"
+                Content="Rename" />
         </StackPanel>
     </Border>
 </UserControl>
