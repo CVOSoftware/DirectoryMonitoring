@@ -9,14 +9,6 @@
     d:DesignHeight="450" 
     d:DesignWidth="800">
     <Grid>
-        <DataGrid ItemsSource="{Binding Logs}">
-            <!--
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path= FileEvent}" Header="Event"  Width="100"/>
-                <DataGridTextColumn Binding="{Binding Path= Path}" Header="Path" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path= Timestamp}" Header="TimeStamp" Width="150"/>
-            </DataGrid.Columns>
-            -->
-        </DataGrid>
+        <DataGrid ItemsSource="{Binding Logs}"/>
     </Grid>
 </UserControl>

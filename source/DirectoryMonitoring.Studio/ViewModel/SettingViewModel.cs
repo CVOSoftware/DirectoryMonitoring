@@ -17,6 +17,10 @@ namespace DirectoryMonitoring.Studio.ViewModel
     {
         #region Const
 
+        private const bool SCAN_START = true;
+
+        private const bool SCAN_STOP = false;
+
         private const string ERROR_EVENT_TYPE = "Error";
 
         #endregion
@@ -52,9 +56,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
             Messenger.Default.Register<SelectMonitoringPathMessage>(this, SetSelectedPath);
 
             scanCanceled = true;
-            isChange = true;
-            isError = true;
-            isRename = true;
+            isCreate = true;
+            isDelete = true;
             monitoringPath = string.Empty;
         }
 
@@ -72,12 +75,6 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             get => includeSubdirectories;
             set => SetValue(ref includeSubdirectories, value);
-        }
-
-        public bool EnableRaisingEvents
-        {
-            get => enableRaisingEvents;
-            set => SetValue(ref enableRaisingEvents, value);
         }
 
         public bool IsChange
@@ -123,12 +120,28 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void OnStart(object commandParameter)
         {
             ScanCanceled = false;
-            ScanDirectory();
+
+            if (watcher == null)
+            {
+                watcher = new FileSystemWatcher();
+                watcher.Path = monitoringPath;
+
+            }
+            else
+            {
+                EventStackDedubscribe();
+            }
+
+            watcher.EnableRaisingEvents = SCAN_START;
+            watcher.IncludeSubdirectories = IncludeSubdirectories;
+            EventStackSubscribe();
         }
 
         private bool CanStart(object commandParameter)
         {
-            return scanCanceled && monitoringPath.Equals(string.Empty) == false;
+            return scanCanceled 
+                   && monitoringPath.Equals(string.Empty) == false
+                   && CheckSelectedEvent();
         }
 
         #endregion
@@ -141,7 +154,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void OnPause(object commandParameter)
         {
-            ScanCanceled = false;
+            ScanCanceled = true;
+            watcher.EnableRaisingEvents = SCAN_STOP;
         }
 
         private bool CanPause(object commandParameter)
@@ -161,13 +175,14 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             ScanCanceled = true;
             EventStackDedubscribe();
+            watcher.EnableRaisingEvents = SCAN_STOP;
             watcher.Dispose();
             watcher = null;
         }
 
         private bool CanStop(object commandParameter)
         {
-            return scanCanceled == false;
+            return watcher != null;
         }
 
         #endregion
@@ -185,15 +200,6 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         #region Other methods
 
-        private void ScanDirectory()
-        {
-            watcher = new FileSystemWatcher();
-            watcher.Path = monitoringPath;
-            watcher.EnableRaisingEvents = EnableRaisingEvents;
-            watcher.IncludeSubdirectories = IncludeSubdirectories;
-            EventStackSubscribe();
-        }
-
         private void EventStackSubscribe()
         {
             if (isChange) watcher.Changed += DirectoryEventHandler;
@@ -206,10 +212,19 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void EventStackDedubscribe()
         {
             if (isChange) watcher.Changed -= DirectoryEventHandler;
-            if (isCreate) watcher.Changed -= DirectoryEventHandler;
-            if (isDelete) watcher.Changed -= DirectoryEventHandler;
-            if (isError) watcher.Changed -= DirectoryEventHandler;
-            if (isRename) watcher.Changed -= DirectoryEventHandler;
+            if (isCreate) watcher.Created -= DirectoryEventHandler;
+            if (isDelete) watcher.Deleted -= DirectoryEventHandler;
+            if (isError) watcher.Error -= DirectoryEventHandler;
+            if (isRename) watcher.Renamed -= DirectoryEventHandler;
+        }
+
+        private bool CheckSelectedEvent()
+        {
+            return isChange
+                   || isCreate
+                   || isDelete
+                   || isError
+                   || isRename;
         }
 
         private void DirectoryEventHandler(object sender, FileSystemEventArgs e)

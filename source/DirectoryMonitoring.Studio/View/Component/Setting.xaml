@@ -69,11 +69,6 @@
                 IsEnabled="{Binding ScanCanceled}"
                 IsChecked="{Binding IncludeSubdirectories}"
                 Content="Include subdirectories" />
-            <CheckBox 
-                Margin="10, 0, 0, 10" 
-                IsEnabled="{Binding ScanCanceled}"
-                IsChecked="{Binding EnableRaisingEvents}"
-                Content="Enable raising events" />
             <Separator
                 Margin="0, 20, 0, 10"
                 BorderThickness="0, 0, 0, 1" 
