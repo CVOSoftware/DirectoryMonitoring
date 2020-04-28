@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\SaveWindow.xaml.cs">
+      <DependentUpon>SaveWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Resource\DataTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -128,12 +131,14 @@
     <Compile Include="Helper\AssemblyHelper.cs" />
     <Compile Include="Helper\FileExplorerHelper.cs" />
     <Compile Include="Helper\FileSystemDialogHelper.cs" />
+    <Compile Include="Helper\SaveDialogHelper.cs" />
     <Compile Include="Message\AddLogItemMessage.cs" />
     <Compile Include="Message\ClearedLogsMessage.cs" />
     <Compile Include="Message\ClearLogsMessage.cs" />
     <Compile Include="Message\NotifyMonitorInfoMessage.cs" />
     <Compile Include="Message\NotifyOutputInfoComponentMessage.cs" />
     <Compile Include="Message\NotifyScanCompleteMessage.cs" />
+    <Compile Include="Message\SaveLogMessage.cs" />
     <Compile Include="Message\SelectMonitoringPathMessage.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -157,6 +162,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\SaveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

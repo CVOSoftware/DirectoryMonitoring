@@ -2,6 +2,7 @@
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
 using DirectoryMonitoring.Studio.Message;
+using DirectoryMonitoring.Studio.Helper;
 
 namespace DirectoryMonitoring.Studio.ViewModel
 {
@@ -22,6 +23,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
             Messenger.Default.Register<AddLogItemMessage>(this, AddLogItem);
             Messenger.Default.Register<NotifyScanCompleteMessage>(this, ScanCanceled);
             Messenger.Default.Register<ClearLogsMessage>(this, ClearLogsHandler);
+            Messenger.Default.Register<SaveLogMessage>(this, SaveLogHandler);
 
             Logs = new ObservableCollection<LogViewModel>();
         }
@@ -82,6 +84,11 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void ClearLogsHandler(ClearLogsMessage message)
         {
             ClearLogs();
+        }
+
+        private void SaveLogHandler(SaveLogMessage message)
+        {
+            SaveDialogHelper.SaveLog(message.SavePath, Logs);
         }
 
         #endregion

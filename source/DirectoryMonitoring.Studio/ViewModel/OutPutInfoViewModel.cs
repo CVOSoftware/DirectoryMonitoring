@@ -91,7 +91,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void OnSaveLog(object comandParameter)
         {
-
+            Messenger.Default.Send<SaveLogMessage>(new SaveLogMessage(saveLogPath));
         }
 
         private bool CanSaveLog(object commandParameters)
