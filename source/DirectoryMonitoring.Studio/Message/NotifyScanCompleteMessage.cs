@@ -1,8 +1,8 @@
 ﻿namespace DirectoryMonitoring.Studio.Message
 {
-    internal class NotifySelectDirComponentMessage
+    internal class NotifyScanCompleteMessage
     {
-        public NotifySelectDirComponentMessage(bool scanCanceled)
+        public NotifyScanCompleteMessage(bool scanCanceled)
         {
             ScanCanceled = scanCanceled;
         }

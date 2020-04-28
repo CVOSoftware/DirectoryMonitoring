@@ -24,7 +24,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         public SelectDirectoryViewModel()
         {
-            Messenger.Default.Register<NotifySelectDirComponentMessage>(this, ScanEndNotify);
+            Messenger.Default.Register<NotifyScanCompleteMessage>(this, ScanEndNotify);
 
             scanCanceled = true;
         }
@@ -47,7 +47,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         #endregion
 
-        #region Coomands
+        #region Commands
 
         #region SelectMonitorDirectory
 
@@ -59,6 +59,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             MonitoringPath = FileSystemDialogHelper.GetDirectory();
             Messenger.Default.Send<SelectMonitoringPathMessage>(new SelectMonitoringPathMessage(MonitoringPath));
+            Messenger.Default.Send<ClearLogsMessage>(ClearLogsMessage.Instance);
         }
 
         private bool CanSelect(object commandParameter)
@@ -72,7 +73,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         #region Message handlers
 
-        private void ScanEndNotify(NotifySelectDirComponentMessage message)
+        private void ScanEndNotify(NotifyScanCompleteMessage message)
         {
             ScanCanceled = message.ScanCanceled;
         }

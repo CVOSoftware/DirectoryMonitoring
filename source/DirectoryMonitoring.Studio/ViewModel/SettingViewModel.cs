@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
-using DirectoryMonitoring.Studio.Helper;
 using DirectoryMonitoring.Studio.Message;
 
 namespace DirectoryMonitoring.Studio.ViewModel
@@ -30,8 +24,6 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private bool scanCanceled;
 
         private bool includeSubdirectories;
-
-        private bool enableRaisingEvents;
 
         private bool isChange;
 
@@ -123,7 +115,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
             if (watcher == null)
             {
-                SendLockSelectPathMessege();
+                SendLockSelectPath();
                 watcher = new FileSystemWatcher();
                 watcher.Path = monitoringPath;
             }
@@ -174,11 +166,12 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void OnStop(object commandParameter)
         {
             ScanCanceled = true;
-            SendLockSelectPathMessege();
+            SendLockSelectPath();
             EventStackDedubscribe();
             watcher.EnableRaisingEvents = SCAN_PAUSE;
             watcher.Dispose();
             watcher = null;
+            
         }
 
         private bool CanStop(object commandParameter)
@@ -195,15 +188,18 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void SetSelectedPath(SelectMonitoringPathMessage message)
         {
             monitoringPath = message.SelectedPath;
+            SendLockSelectPath();
         }
 
         #endregion
 
         #region Other methods
 
-        private void SendLockSelectPathMessege()
+        private void SendLockSelectPath()
         {
-            Messenger.Default.Send<NotifySelectDirComponentMessage>(new NotifySelectDirComponentMessage(ScanCanceled));
+            var message = new NotifyScanCompleteMessage(ScanCanceled);
+
+            Messenger.Default.Send<NotifyScanCompleteMessage>(message);
         }
 
         private void EventStackSubscribe()
@@ -217,11 +213,11 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void EventStackDedubscribe()
         {
-            if (isChange) watcher.Changed -= DirectoryEventHandler;
-            if (isCreate) watcher.Created -= DirectoryEventHandler;
-            if (isDelete) watcher.Deleted -= DirectoryEventHandler;
-            if (isError) watcher.Error -= DirectoryEventHandler;
-            if (isRename) watcher.Renamed -= DirectoryEventHandler;
+            watcher.Changed -= DirectoryEventHandler;
+            watcher.Created -= DirectoryEventHandler;
+            watcher.Deleted -= DirectoryEventHandler;
+            watcher.Error -= DirectoryEventHandler;
+            watcher.Renamed -= DirectoryEventHandler;
         }
 
         private bool CheckSelectedEvent()

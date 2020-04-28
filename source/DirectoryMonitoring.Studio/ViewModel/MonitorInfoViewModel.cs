@@ -2,12 +2,15 @@
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
 using DirectoryMonitoring.Studio.Message;
+using NLog.Fluent;
 
 namespace DirectoryMonitoring.Studio.ViewModel
 {
     internal class MonitorInfoViewModel : BaseViewModel
     {
         #region Field
+
+        private bool scanComplete;
 
         private bool autoScroll;
 
@@ -18,6 +21,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
         public MonitorInfoViewModel()
         {
             Messenger.Default.Register<AddLogItemMessage>(this, AddLogItem);
+            Messenger.Default.Register<NotifyScanCompleteMessage>(this, ScanCanceled);
+            Messenger.Default.Register<ClearLogsMessage>(this, ClearLogs);
 
             Logs = new ObservableCollection<LogViewModel>();
         }
@@ -43,6 +48,30 @@ namespace DirectoryMonitoring.Studio.ViewModel
             var log = new LogViewModel(message.FileEvent, message.Path, message.Timestamp);
 
             Logs.Add(log);
+        }
+
+        private void ScanCanceled(NotifyScanCompleteMessage message)
+        {
+            var informationToSave = Logs.Count > 0;
+
+            scanComplete = message.ScanCanceled;
+            Messenger.Default.Send<NotifyOutputInfoComponentMessage>(new NotifyOutputInfoComponentMessage(scanComplete, informationToSave));
+        }
+
+        private void ClearLogs(ClearLogsMessage message)
+        {
+            Logs.Clear();
+        }
+
+        #endregion
+
+        #region Other methods
+
+        private void SendNotifyOutputInfoMessage()
+        {
+            /*var 
+            var message = new NotifyOutputInfoComponentMessage(scanCanceled, );
+            Messenger.Default.Send<NotifyOutputInfoComponentMessage>(message);*/
         }
 
         #endregion
