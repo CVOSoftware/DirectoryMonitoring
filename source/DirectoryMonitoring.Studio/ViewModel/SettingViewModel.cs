@@ -19,7 +19,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private const bool SCAN_START = true;
 
-        private const bool SCAN_STOP = false;
+        private const bool SCAN_PAUSE = false;
 
         private const string ERROR_EVENT_TYPE = "Error";
 
@@ -123,9 +123,9 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
             if (watcher == null)
             {
+                SendLockSelectPathMessege();
                 watcher = new FileSystemWatcher();
                 watcher.Path = monitoringPath;
-
             }
             else
             {
@@ -155,7 +155,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void OnPause(object commandParameter)
         {
             ScanCanceled = true;
-            watcher.EnableRaisingEvents = SCAN_STOP;
+            watcher.EnableRaisingEvents = SCAN_PAUSE;
         }
 
         private bool CanPause(object commandParameter)
@@ -174,8 +174,9 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void OnStop(object commandParameter)
         {
             ScanCanceled = true;
+            SendLockSelectPathMessege();
             EventStackDedubscribe();
-            watcher.EnableRaisingEvents = SCAN_STOP;
+            watcher.EnableRaisingEvents = SCAN_PAUSE;
             watcher.Dispose();
             watcher = null;
         }
@@ -199,6 +200,11 @@ namespace DirectoryMonitoring.Studio.ViewModel
         #endregion
 
         #region Other methods
+
+        private void SendLockSelectPathMessege()
+        {
+            Messenger.Default.Send<NotifySelectDirComponentMessage>(new NotifySelectDirComponentMessage(ScanCanceled));
+        }
 
         private void EventStackSubscribe()
         {

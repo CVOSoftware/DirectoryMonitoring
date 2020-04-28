@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Base\BaseViewModel.cs" />
     <Compile Include="Base\RelayCommand.cs" />
+    <Compile Include="Behavior\ScrollToEndBehavior.cs" />
     <Compile Include="Helper\AssemblyHelper.cs" />
     <Compile Include="Helper\FileExplorerHelper.cs" />
     <Compile Include="Helper\FileSystemDialogHelper.cs" />

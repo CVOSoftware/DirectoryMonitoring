@@ -7,6 +7,12 @@ namespace DirectoryMonitoring.Studio.ViewModel
 {
     internal class MonitorInfoViewModel : BaseViewModel
     {
+        #region Field
+
+        private bool autoScroll;
+
+        #endregion
+
         #region Constructor
 
         public MonitorInfoViewModel()
@@ -19,6 +25,12 @@ namespace DirectoryMonitoring.Studio.ViewModel
         #endregion
 
         #region Properties
+
+        public bool AutoScroll
+        {
+            get => autoScroll;
+            set => SetValue(ref autoScroll, value);
+        }
 
         public ObservableCollection<LogViewModel> Logs { get; private set; }
 
