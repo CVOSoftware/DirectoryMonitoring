@@ -38,6 +38,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         public OutputInfoViewModel()
         {
             Messenger.Default.Register<NotifyOutputInfoComponentMessage>(this, ScanEndNotify);
+            Messenger.Default.Register<ClearedLogsMessage>(this, ClearedLogs);
 
             saveLogPath = CreateDefaultSaveLogDirectoryPath();
             cacheSaveLogPath = saveLogPath;
@@ -145,6 +146,11 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             ScanCompleted = message.ScanCompleted;
             InformationToSave = message.InformationToSave;
+        }
+
+        private void ClearedLogs(ClearedLogsMessage message)
+        {
+            informationToSave = message.InformationToSave;
         }
 
         #endregion

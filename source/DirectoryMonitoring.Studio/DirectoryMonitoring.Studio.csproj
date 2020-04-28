@@ -129,6 +129,7 @@
     <Compile Include="Helper\FileExplorerHelper.cs" />
     <Compile Include="Helper\FileSystemDialogHelper.cs" />
     <Compile Include="Message\AddLogItemMessage.cs" />
+    <Compile Include="Message\ClearedLogsMessage.cs" />
     <Compile Include="Message\ClearLogsMessage.cs" />
     <Compile Include="Message\NotifyMonitorInfoMessage.cs" />
     <Compile Include="Message\NotifyOutputInfoComponentMessage.cs" />

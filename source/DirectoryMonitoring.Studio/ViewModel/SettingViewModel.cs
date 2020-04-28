@@ -188,7 +188,6 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void SetSelectedPath(SelectMonitoringPathMessage message)
         {
             monitoringPath = message.SelectedPath;
-            SendLockSelectPath();
         }
 
         #endregion

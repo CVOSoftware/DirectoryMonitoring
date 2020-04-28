@@ -60,6 +60,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void ClearLogs(ClearLogsMessage message)
         {
             Logs.Clear();
+            Messenger.Default.Send<ClearedLogsMessage>(new ClearedLogsMessage(false));
         }
 
         #endregion

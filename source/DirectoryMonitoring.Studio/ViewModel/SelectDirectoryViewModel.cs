@@ -58,6 +58,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void OnSelect(object commandParameter)
         {
             MonitoringPath = FileSystemDialogHelper.GetDirectory();
+
             Messenger.Default.Send<SelectMonitoringPathMessage>(new SelectMonitoringPathMessage(MonitoringPath));
             Messenger.Default.Send<ClearLogsMessage>(ClearLogsMessage.Instance);
         }
