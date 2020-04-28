@@ -34,12 +34,20 @@
         <StackPanel 
             Orientation="Horizontal" 
             Grid.Row="2">
+            <Button
+                Margin="10"
+                Padding="15, 5"
+                Command="{Binding Clear}"
+                Style="{StaticResource SquareButtonStyle}"
+                Content="Clear"/>
             <CheckBox 
                 Content="Auto scroll" 
+                VerticalAlignment="Center"
                 IsChecked="{Binding AutoScroll}" 
                 Margin="10"/>
             <TextBlock
                 Margin="10"
+                VerticalAlignment="Center"
                 Text="{Binding ElementName=Logs, Path=Items.Count, Converter={c:CountToVisibleConverter}}"/>
         </StackPanel>
     </Grid>

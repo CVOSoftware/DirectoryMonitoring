@@ -21,7 +21,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             Messenger.Default.Register<AddLogItemMessage>(this, AddLogItem);
             Messenger.Default.Register<NotifyScanCompleteMessage>(this, ScanCanceled);
-            Messenger.Default.Register<ClearLogsMessage>(this, ClearLogs);
+            Messenger.Default.Register<ClearLogsMessage>(this, ClearLogsHandler);
 
             Logs = new ObservableCollection<LogViewModel>();
         }
@@ -37,6 +37,28 @@ namespace DirectoryMonitoring.Studio.ViewModel
         }
 
         public ObservableCollection<LogViewModel> Logs { get; private set; }
+
+        #endregion
+
+        #region Command
+
+        #region Save
+
+        private RelayCommand clear;
+
+        public RelayCommand Clear => RelayCommand.Register(ref clear, OnClear, CanClear);
+
+        private void OnClear(object commandParameter)
+        {
+            ClearLogs();
+        }
+
+        private bool CanClear(object commandParameter)
+        {
+            return Logs.Count > 0;
+        }
+
+        #endregion
 
         #endregion
 
@@ -57,7 +79,16 @@ namespace DirectoryMonitoring.Studio.ViewModel
             Messenger.Default.Send<NotifyOutputInfoComponentMessage>(new NotifyOutputInfoComponentMessage(scanComplete, informationToSave));
         }
 
-        private void ClearLogs(ClearLogsMessage message)
+        private void ClearLogsHandler(ClearLogsMessage message)
+        {
+            ClearLogs();
+        }
+
+        #endregion
+
+        #region Other methods
+
+        private void ClearLogs()
         {
             Logs.Clear();
             Messenger.Default.Send<ClearedLogsMessage>(new ClearedLogsMessage(false));
