@@ -2,7 +2,6 @@
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
 using DirectoryMonitoring.Studio.Message;
-using NLog.Fluent;
 
 namespace DirectoryMonitoring.Studio.ViewModel
 {
@@ -61,17 +60,6 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void ClearLogs(ClearLogsMessage message)
         {
             Logs.Clear();
-        }
-
-        #endregion
-
-        #region Other methods
-
-        private void SendNotifyOutputInfoMessage()
-        {
-            /*var 
-            var message = new NotifyOutputInfoComponentMessage(scanCanceled, );
-            Messenger.Default.Send<NotifyOutputInfoComponentMessage>(message);*/
         }
 
         #endregion

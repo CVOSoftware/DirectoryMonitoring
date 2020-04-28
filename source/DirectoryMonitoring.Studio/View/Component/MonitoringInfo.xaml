@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:b="clr-namespace:DirectoryMonitoring.Studio.Behavior"
+    xmlns:c="clr-namespace:DirectoryMonitoring.Studio.Converter"
     xmlns:local="clr-namespace:DirectoryMonitoring.Studio.View.Component"
     mc:Ignorable="d" 
     d:DesignHeight="450" 
@@ -17,6 +18,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DataGrid
+            x:Name="Logs"
             Grid.Row="0"
             ItemsSource="{Binding Logs}" 
             b:ScrollToEndBehavior.AutoScroll="{Binding AutoScroll}">
@@ -36,6 +38,9 @@
                 Content="Auto scroll" 
                 IsChecked="{Binding AutoScroll}" 
                 Margin="10"/>
+            <TextBlock
+                Margin="10"
+                Text="{Binding ElementName=Logs, Path=Items.Count, Converter={c:CountToVisibleConverter}}"/>
         </StackPanel>
     </Grid>
 </UserControl>
