@@ -135,7 +135,7 @@
     <Compile Include="Helper\AssemblyHelper.cs" />
     <Compile Include="Helper\FileExplorerHelper.cs" />
     <Compile Include="Helper\FileSystemDialogHelper.cs" />
-    <Compile Include="Helper\SaveDialogHelper.cs" />
+    <Compile Include="Helper\DialogHelper.cs" />
     <Compile Include="Message\AddLogItemMessage.cs" />
     <Compile Include="Message\ClearedLogsMessage.cs" />
     <Compile Include="Message\ClearLogsMessage.cs" />

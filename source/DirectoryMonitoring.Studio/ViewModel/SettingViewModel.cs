@@ -4,6 +4,7 @@ using System.Windows;
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
 using DirectoryMonitoring.Studio.Message;
+using DirectoryMonitoring.Studio.Helper;
 
 namespace DirectoryMonitoring.Studio.ViewModel
 {
@@ -16,6 +17,10 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private const bool SCAN_PAUSE = false;
 
         private const string ERROR_EVENT_TYPE = "Error";
+
+        private const string ERROR_TITLE = "Watcher error";
+
+        private const string ERROR_DESCRIPTION = "The specified path is not valid: ";
 
         #endregion
 
@@ -132,7 +137,9 @@ namespace DirectoryMonitoring.Studio.ViewModel
             }
             catch
             {
-                // Show dialog message
+                var description = $"{ERROR_DESCRIPTION}{monitoringPath}";
+
+                DialogHelper.MessageBox(ERROR_TITLE, description);
                 ScanCanceled = true;
                 monitoringPath = string.Empty;
                 SendLockSelectPath();

@@ -88,7 +88,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void SaveLogHandler(SaveLogMessage message)
         {
-            SaveDialogHelper.SaveLog(message.SavePath, Logs);
+            DialogHelper.SaveLog(message.SavePath, Logs);
         }
 
         #endregion
