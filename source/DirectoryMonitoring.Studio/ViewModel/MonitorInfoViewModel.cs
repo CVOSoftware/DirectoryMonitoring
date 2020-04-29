@@ -1,8 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
 using DirectoryMonitoring.Studio.Message;
 using DirectoryMonitoring.Studio.Helper;
+using System.Text;
+using System.IO;
 
 namespace DirectoryMonitoring.Studio.ViewModel
 {
@@ -88,7 +91,24 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void SaveLogHandler(SaveLogMessage message)
         {
-            DialogHelper.SaveLog(message.SavePath, Logs);
+            var fileName = $"{Guid.NewGuid()}.txt";
+            var savePath = Path.Combine(message.SavePath, fileName);
+            var saveData = new StringBuilder();
+
+            for(var i = 0; i < Logs.Count; i++)
+            {
+                saveData.Append(Logs[i].FileEvent).Append("\t")
+                        .Append(Logs[i].Timestamp).Append("\t")
+                        .Append(Logs[i].Path).Append("\n");
+            }
+
+            using(var fileStream = new FileStream(savePath, FileMode.Create))
+            {
+                using(var streamWriter = new StreamWriter(fileStream))
+                {
+                    streamWriter.WriteLine(saveData.ToString());
+                }
+            }
         }
 
         #endregion

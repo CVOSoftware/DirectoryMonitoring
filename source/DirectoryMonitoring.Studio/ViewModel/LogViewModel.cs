@@ -14,8 +14,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
         public LogViewModel(string fileEvent, string path, DateTime timestamp)
         {
             FileEvent = fileEvent;
-            Path = path;
             Timestamp = timestamp;
+            Path = path;
         }
 
         #endregion
@@ -24,9 +24,9 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         public string FileEvent { get; }
 
-        public string Path { get; }
-
         public DateTime Timestamp { get; }
+
+        public string Path { get; }
 
         #endregion
     }
