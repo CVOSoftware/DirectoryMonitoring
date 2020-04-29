@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Base\ILoggerStrategy.cs" />
+    <Compile Include="Log\Logger.cs" />
+    <Compile Include="Log\Strategy\NLogStrategy.cs" />
     <Compile Include="View\SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>

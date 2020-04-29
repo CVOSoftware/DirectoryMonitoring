@@ -123,10 +123,17 @@ namespace DirectoryMonitoring.Studio.ViewModel
             {
                 EventStackDedubscribe();
             }
-
-            watcher.EnableRaisingEvents = SCAN_START;
-            watcher.IncludeSubdirectories = IncludeSubdirectories;
-            EventStackSubscribe();
+            
+            try
+            {
+                watcher.EnableRaisingEvents = SCAN_START;
+                watcher.IncludeSubdirectories = IncludeSubdirectories;
+                EventStackSubscribe();
+            }
+            catch
+            {
+                // Show dialog message
+            }
         }
 
         private bool CanStart(object commandParameter)

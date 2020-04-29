@@ -5,7 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using DirectoryMonitoring.Studio.Base;
+using DirectoryMonitoring.Studio.Log;
+using DirectoryMonitoring.Studio.Log.Strategy;
 using DirectoryMonitoring.Studio.ViewModel;
 using DirectoryMonitoring.Studio.View;
 
@@ -17,9 +18,11 @@ namespace Studio
         {
             base.OnStartup(e);
 
+            var logger = new NLogStrategy();
             var viewModel = new MainViewModel();
             var view = new MainWindow();
 
+            Logger.Instance.SetLogger(logger);
             view.DataContext = viewModel;
             view.Show();
 
