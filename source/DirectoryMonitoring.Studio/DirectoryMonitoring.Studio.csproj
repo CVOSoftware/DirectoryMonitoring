@@ -51,10 +51,6 @@
       <HintPath>..\packages\MVVMLight.Messaging.1.0.0.0\lib\net40\MVVMLight.Messaging.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -85,9 +81,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Base\ILoggerStrategy.cs" />
-    <Compile Include="Log\Logger.cs" />
-    <Compile Include="Log\Strategy\NLogStrategy.cs" />
     <Compile Include="Message\ResetSelectedPathMessage.cs" />
     <Compile Include="View\SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
@@ -207,7 +200,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <copy SourceFiles="..\packages\NLog.4.7.0\lib\net45\NLog.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\MVVMLight.Messaging.1.0.0.0\lib\net40\MVVMLight.Messaging.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll" DestinationFolder="$(OutDir)lib" />
