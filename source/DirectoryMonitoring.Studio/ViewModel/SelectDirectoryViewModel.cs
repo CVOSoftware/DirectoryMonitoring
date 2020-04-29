@@ -25,6 +25,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         public SelectDirectoryViewModel()
         {
             Messenger.Default.Register<NotifyScanCompleteMessage>(this, ScanEndNotify);
+            Messenger.Default.Register<ResetSelectedPathMessage>(this, ResetSelectedPath);
 
             scanCanceled = true;
         }
@@ -77,6 +78,11 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void ScanEndNotify(NotifyScanCompleteMessage message)
         {
             ScanCanceled = message.ScanCanceled;
+        }
+
+        private void ResetSelectedPath(ResetSelectedPathMessage message)
+        {
+            MonitoringPath = message.MonitoringPath;
         }
 
         #endregion

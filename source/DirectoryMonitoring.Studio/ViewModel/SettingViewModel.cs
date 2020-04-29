@@ -113,19 +113,19 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             ScanCanceled = false;
 
-            if (watcher == null)
-            {
-                SendLockSelectPath();
-                watcher = new FileSystemWatcher();
-                watcher.Path = monitoringPath;
-            }
-            else
-            {
-                EventStackDedubscribe();
-            }
-            
             try
             {
+                if (watcher == null)
+                {
+                    SendLockSelectPath();
+                    watcher = new FileSystemWatcher();
+                    watcher.Path = monitoringPath;
+                }
+                else
+                {
+                    EventStackDedubscribe();
+                }
+
                 watcher.EnableRaisingEvents = SCAN_START;
                 watcher.IncludeSubdirectories = IncludeSubdirectories;
                 EventStackSubscribe();
@@ -133,6 +133,12 @@ namespace DirectoryMonitoring.Studio.ViewModel
             catch
             {
                 // Show dialog message
+                ScanCanceled = true;
+                monitoringPath = string.Empty;
+                SendLockSelectPath();
+                SendResetSelectedMonitoringPath();
+                watcher.Dispose();
+                watcher = null;
             }
         }
 
@@ -203,9 +209,16 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void SendLockSelectPath()
         {
-            var message = new NotifyScanCompleteMessage(ScanCanceled);
+            var message = new NotifyScanCompleteMessage(scanCanceled);
 
             Messenger.Default.Send<NotifyScanCompleteMessage>(message);
+        }
+
+        private void SendResetSelectedMonitoringPath()
+        {
+            var message = new ResetSelectedPathMessage(monitoringPath);
+
+            Messenger.Default.Send<ResetSelectedPathMessage>(message);
         }
 
         private void EventStackSubscribe()

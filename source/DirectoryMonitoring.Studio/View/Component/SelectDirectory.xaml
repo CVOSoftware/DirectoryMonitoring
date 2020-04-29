@@ -23,6 +23,7 @@
                 Height="30"
                 IsEnabled="False"
                 VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
                 Margin="10"
                 Text="{Binding MonitoringPath}"/>
             <Button 
