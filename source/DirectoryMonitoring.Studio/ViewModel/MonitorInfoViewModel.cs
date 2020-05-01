@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.ObjectModel;
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
@@ -6,16 +7,29 @@ using DirectoryMonitoring.Studio.Message;
 using DirectoryMonitoring.Studio.Helper;
 using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace DirectoryMonitoring.Studio.ViewModel
 {
     internal class MonitorInfoViewModel : BaseViewModel
     {
+        #region Const 
+
+        private const string FILE_EXTENSION = ".txt";
+
+        private const string TITLE = "Saving complete";
+
+        private const string LABEL = "Saved to path:";
+
+        #endregion
+
         #region Field
 
         private bool scanComplete;
 
         private bool autoScroll;
+
+        private bool saving;
 
         #endregion
 
@@ -28,6 +42,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
             Messenger.Default.Register<ClearLogsMessage>(this, ClearLogsHandler);
             Messenger.Default.Register<SaveLogMessage>(this, SaveLogHandler);
 
+            saving = true;
             Logs = new ObservableCollection<LogViewModel>();
         }
 
@@ -60,7 +75,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private bool CanClear(object commandParameter)
         {
-            return Logs.Count > 0;
+            return saving && Logs.Count > 0;
         }
 
         #endregion
@@ -91,20 +106,32 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void SaveLogHandler(SaveLogMessage message)
         {
-            var fileName = $"{Guid.NewGuid()}.txt";
-            var savePath = Path.Combine(message.SavePath, fileName);
-            var fileStream = new FileStream(savePath, FileMode.Create);
-            var streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
+            saving = false;
 
-            for (var i = 0; i < Logs.Count; i++)
+            Task.Run(() =>
             {
-                var saveData = $"{Logs[i].FileEvent, -10}{Logs[i].Timestamp, -10}{Logs[i].Path}";
+                var fileName = $"{Guid.NewGuid()}{FILE_EXTENSION}";
+                var savePath = Path.Combine(message.SavePath, fileName);
+                var fileStream = new FileStream(savePath, FileMode.Create);
+                var streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
 
-                streamWriter.WriteLine(saveData);
-            }
+                for (var i = 0; i < Logs.Count; i++)
+                {
+                    var saveData = $"{Logs[i].FileEvent,-10}{Logs[i].Timestamp,-10}{Logs[i].Path}";
 
-            streamWriter.Close();
-            fileStream.Close();
+                    streamWriter.WriteLine(saveData);
+                }
+
+                streamWriter.Close();
+                fileStream.Close();
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    saving = true;
+                    RelayCommand.RaiseCanExecuteChanged();
+                    DialogHelper.MessageBox(TITLE, $"{LABEL} {savePath}");
+                });
+            });
         }
 
         #endregion

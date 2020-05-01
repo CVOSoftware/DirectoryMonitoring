@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using MahApps.Metro.Controls;
 using DirectoryMonitoring.Studio.ViewModel;
@@ -9,11 +10,6 @@ namespace DirectoryMonitoring.Studio.Helper
 {
     internal static class DialogHelper
     {
-        public static void SaveLog(string savePath, IEnumerable<LogViewModel> logs)
-        {
-            // code ..
-        }
-
         public static void MessageBox(string title, string description)
         {
             if(Application.Current.MainWindow is MetroWindow view)
