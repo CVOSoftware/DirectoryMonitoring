@@ -93,22 +93,18 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             var fileName = $"{Guid.NewGuid()}.txt";
             var savePath = Path.Combine(message.SavePath, fileName);
-            var saveData = new StringBuilder();
+            var fileStream = new FileStream(savePath, FileMode.Create);
+            var streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
 
-            for(var i = 0; i < Logs.Count; i++)
+            for (var i = 0; i < Logs.Count; i++)
             {
-                saveData.Append(Logs[i].FileEvent).Append("\t")
-                        .Append(Logs[i].Timestamp).Append("\t")
-                        .Append(Logs[i].Path).Append("\n");
+                var saveData = $"{Logs[i].FileEvent, -10}{Logs[i].Timestamp, -10}{Logs[i].Path}";
+
+                streamWriter.WriteLine(saveData);
             }
 
-            using(var fileStream = new FileStream(savePath, FileMode.Create))
-            {
-                using(var streamWriter = new StreamWriter(fileStream))
-                {
-                    streamWriter.WriteLine(saveData.ToString());
-                }
-            }
+            streamWriter.Close();
+            fileStream.Close();
         }
 
         #endregion
