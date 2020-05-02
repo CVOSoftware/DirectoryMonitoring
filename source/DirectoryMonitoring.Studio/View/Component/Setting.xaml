@@ -78,31 +78,41 @@
                 Padding="0"
                 FontSize="18"
                 Content="Events panel"/>
-            <CheckBox 
-                Margin="10, 0, 0, 10" 
-                IsEnabled="{Binding ScanCanceled}"
-                IsChecked="{Binding IsChange}"
-                Content="Change" />
-            <CheckBox 
-                Margin="10, 0, 0, 10" 
-                IsEnabled="{Binding ScanCanceled}"
-                IsChecked="{Binding IsCreate}"
-                Content="Create" />
-            <CheckBox 
-                Margin="10, 0, 0, 10" 
-                IsEnabled="{Binding ScanCanceled}"
-                IsChecked="{Binding IsDelete}"
-                Content="Delete" />
-            <CheckBox 
-                Margin="10, 0, 0, 10"
-                IsEnabled="{Binding ScanCanceled}"
-                IsChecked="{Binding IsError}"
-                Content="Error" />
-            <CheckBox 
-                Margin="10, 0, 0, 10" 
-                IsEnabled="{Binding ScanCanceled}"
-                IsChecked="{Binding IsRename}"
-                Content="Rename" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <CheckBox 
+                        Margin="10, 0, 0, 10" 
+                        IsEnabled="{Binding ScanCanceled}"
+                        IsChecked="{Binding IsChange}"
+                        Content="Change" />
+                    <CheckBox 
+                        Margin="10, 0, 0, 10" 
+                        IsEnabled="{Binding ScanCanceled}"
+                        IsChecked="{Binding IsCreate}"
+                        Content="Create" />
+                    <CheckBox 
+                        Margin="10, 0, 0, 10" 
+                        IsEnabled="{Binding ScanCanceled}"
+                        IsChecked="{Binding IsDelete}"
+                        Content="Delete" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <CheckBox 
+                        Margin="10, 0, 0, 10"
+                        IsEnabled="{Binding ScanCanceled}"
+                        IsChecked="{Binding IsError}"
+                        Content="Error" />
+                    <CheckBox 
+                        Margin="10, 0, 0, 10" 
+                        IsEnabled="{Binding ScanCanceled}"
+                        IsChecked="{Binding IsRename}"
+                        Content="Rename" />
+                </StackPanel>
+            </Grid>
             <Separator
                 Margin="0, 20, 0, 10"
                 BorderThickness="0, 0, 0, 1" 

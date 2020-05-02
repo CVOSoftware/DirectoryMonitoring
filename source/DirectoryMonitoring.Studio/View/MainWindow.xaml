@@ -11,9 +11,9 @@
     x:Name="Main"
     Title="Directory monitor"
     WindowStartupLocation="CenterScreen"
-    MinHeight="640"
+    MinHeight="768"
     Height="{Binding ElementName=Main, Path=MinHeight}"
-    MinWidth="1024"
+    MinWidth="1366"
     Width="{Binding ElementName=Main, Path=MinWidth}"
     Style="{StaticResource Style/MainWindow}">
     <Grid>
