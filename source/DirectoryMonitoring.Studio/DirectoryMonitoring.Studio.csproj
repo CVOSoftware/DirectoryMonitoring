@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\FileEventToBrushConverter.cs" />
     <Compile Include="Message\ResetSelectedPathMessage.cs" />
     <Compile Include="View\SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>

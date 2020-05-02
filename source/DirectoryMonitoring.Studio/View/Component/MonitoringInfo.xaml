@@ -20,11 +20,17 @@
         <DataGrid
             x:Name="Logs"
             Grid.Row="0"
+            AutoGenerateColumns="False"
             ItemsSource="{Binding Logs}" 
             b:ScrollToEndBehavior.AutoScroll="{Binding AutoScroll}">
             <i:Interaction.Behaviors>
                 <b:ScrollToEndBehavior/>
             </i:Interaction.Behaviors>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="File event" CellTemplate="{StaticResource DataTemplate/DataGrid/Column/FileEvent}"/> 
+                <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}"/>
+                <DataGridTextColumn Header="Path" Binding="{Binding Path}"/>
+            </DataGrid.Columns>
         </DataGrid>
         <Separator 
             Grid.Row="1" 
