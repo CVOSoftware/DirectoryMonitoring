@@ -40,7 +40,25 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private bool isRename;
 
+        private bool filterAttribute;
+
+        private bool filterDirectory;
+
+        private bool filterLastAccess;
+
+        private bool filterSecurity;
+
+        private bool filterCreationTime;
+
+        private bool filterFileName;
+
+        private bool filterLastWrite;
+
+        private bool filterSize;
+
         private string monitoringPath;
+
+        private string filter;
 
         private FileSystemWatcher watcher;
 
@@ -55,6 +73,9 @@ namespace DirectoryMonitoring.Studio.ViewModel
             scanCanceled = true;
             isCreate = true;
             isDelete = true;
+            filterFileName = true;
+            filterDirectory = true;
+            filterLastWrite = true;
             monitoringPath = string.Empty;
         }
 
@@ -104,6 +125,60 @@ namespace DirectoryMonitoring.Studio.ViewModel
             set => SetValue(ref isRename, value);
         }
 
+        public bool FilterAttribute
+        {
+            get => filterAttribute;
+            set => SetValue(ref filterAttribute, value);
+        }
+
+        public bool FilterDirectory
+        {
+            get => filterDirectory;
+            set => SetValue(ref filterDirectory, value);
+        }
+
+        public bool FilterLastAccess
+        {
+            get => filterLastAccess;
+            set => SetValue(ref filterLastAccess, value);
+        }
+
+        public bool FilterSecurity
+        {
+            get => filterSecurity;
+            set => SetValue(ref filterSecurity, value);
+        }
+
+        public bool FilterCreationTime
+        {
+            get => filterCreationTime;
+            set => SetValue(ref filterCreationTime, value);
+        }
+
+        public bool FilterFileName
+        {
+            get => filterFileName;
+            set => SetValue(ref filterFileName, value);
+        }
+
+        public bool FilterLastWrite
+        {
+            get => filterLastWrite;
+            set => SetValue(ref filterLastWrite, value);
+        }
+
+        public bool FilterSize
+        {
+            get => filterSize;
+            set => SetValue(ref filterSize, value);
+        }
+
+        public string Filter
+        {
+            get => filter;
+            set => SetValue(ref filter, value);
+        }
+
         #endregion
 
         #region Command
@@ -124,16 +199,18 @@ namespace DirectoryMonitoring.Studio.ViewModel
                 {
                     SendLockSelectPath();
                     watcher = new FileSystemWatcher();
-                    watcher.Path = monitoringPath;
                 }
                 else
                 {
                     EventStackDedubscribe();
                 }
 
-                watcher.EnableRaisingEvents = SCAN_START;
-                watcher.IncludeSubdirectories = IncludeSubdirectories;
                 EventStackSubscribe();
+                SetWatcherNotifyFilters();
+                watcher.Filter = Filter;
+                watcher.Path = monitoringPath;
+                watcher.IncludeSubdirectories = IncludeSubdirectories;
+                watcher.EnableRaisingEvents = SCAN_START;
             }
             catch
             {
@@ -226,6 +303,20 @@ namespace DirectoryMonitoring.Studio.ViewModel
             var message = new ResetSelectedPathMessage(monitoringPath);
 
             Messenger.Default.Send<ResetSelectedPathMessage>(message);
+        }
+
+        private void SetWatcherNotifyFilters()
+        {
+            watcher.NotifyFilter = default;
+
+            if (filterAttribute) watcher.NotifyFilter |= NotifyFilters.Attributes;
+            if (filterDirectory) watcher.NotifyFilter |= NotifyFilters.DirectoryName;
+            if (filterLastAccess) watcher.NotifyFilter |= NotifyFilters.LastAccess;
+            if (filterSecurity) watcher.NotifyFilter |= NotifyFilters.Security;
+            if (filterCreationTime) watcher.NotifyFilter |= NotifyFilters.CreationTime;
+            if (filterFileName) watcher.NotifyFilter |= NotifyFilters.FileName;
+            if (filterLastWrite) watcher.NotifyFilter |= NotifyFilters.LastWrite;
+            if (filterSize) watcher.NotifyFilter |= NotifyFilters.Size;
         }
 
         private void EventStackSubscribe()

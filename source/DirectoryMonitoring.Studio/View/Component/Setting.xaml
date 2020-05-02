@@ -112,6 +112,15 @@
                 Padding="0"
                 FontSize="18"
                 Content="Filters panel"/>
+            <TextBlock 
+                Grid.Column="0" 
+                Margin="10, 0, 10, 5" 
+                Text="Filter"/>
+            <TextBox 
+                Grid.Column="1"  
+                Margin="10, 0, 10, 10"
+                IsEnabled="{Binding ScanCanceled}"
+                Text="{Binding Filter}"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -120,21 +129,25 @@
                 <StackPanel Grid.Column="0">
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterAttribute}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="Attributes"
                         ToolTip="The attributes of the file or folder"/>
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterDirectory}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="Directory name"
                         ToolTip="The name of the directory"/>
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterLastAccess}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="Last access"
                         ToolTip="The date the file or folder was last opened"/>
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterSecurity}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="Security"
                         ToolTip="The security settings of the file or folder"/>
@@ -142,21 +155,25 @@
                 <StackPanel Grid.Column="1">
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterCreationTime}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="Creation time"
                         ToolTip="The time the file or folder was created"/>
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterFileName}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="File name"
                         ToolTip="The name of the file"/>
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterLastWrite}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="Last write"
                         ToolTip="The date the file or folder last had anything written to it"/>
                     <CheckBox 
                         Margin="10, 0, 0, 10"
+                        IsChecked="{Binding FilterSize}"
                         IsEnabled="{Binding ScanCanceled}"
                         Content="Size"
                         ToolTip="The size of the file or folder"/>
