@@ -7,8 +7,8 @@
     xmlns:metroIcon="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:DirectoryMonitoring.Studio.View.Component"
     mc:Ignorable="d" 
-    d:DesignHeight="450" 
-    d:DesignWidth="800">
+    d:DesignHeight="800" 
+    d:DesignWidth="350">
     <UserControl.Resources>
         <Style x:Key="Stackpanel/EventLine" TargetType="{x:Type StackPanel}">
             <Setter Property="Orientation" Value="Horizontal"/>
@@ -19,6 +19,10 @@
             <Setter Property="Width" Value="10"/>
             <Setter Property="Height" Value="10"/>
             <Setter Property="CornerRadius" Value="5"/>
+        </Style>
+        <Style x:Key="Button/State" TargetType="{x:Type Button}" BasedOn="{StaticResource SquareButtonStyle}">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
         </Style>
     </UserControl.Resources>
     <Border 
@@ -31,41 +35,48 @@
                 Padding="0"
                 FontSize="18"
                 Content="Control panel"/>
-            <Grid
-                HorizontalAlignment="Center">
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button
+                <StackPanel 
                     Grid.Column="0"
-                    Width="40" 
-                    Height="40"
-                    ToolTip="Start"
-                    Command="{Binding Start}"
-                    Style="{StaticResource SquareButtonStyle}">
-                    <metroIcon:Material Kind="Play" />
-                </Button>
-                <Button
+                    Margin="0, 0, 10, 0"
+                    Orientation="Horizontal">
+                    <Button
+                        ToolTip="Start"
+                        Command="{Binding Start}"
+                        Style="{StaticResource Button/State}">
+                        <metroIcon:Material Kind="Play" />
+                    </Button>
+                    <Button
+                        Margin="10, 0"
+                        ToolTip="Pause"
+                        Command="{Binding Pause}"
+                        Style="{StaticResource Button/State}">
+                        <metroIcon:Material Kind="Pause" />
+                    </Button>
+                    <Button
+                        ToolTip="Stop"
+                        Command="{Binding Stop}"
+                        Style="{StaticResource Button/State}">
+                        <metroIcon:Material Kind="Stop" />
+                    </Button>
+                </StackPanel>
+                <Border 
                     Grid.Column="1"
-                    Width="40"
                     Height="40"
-                    Margin="10, 0"
-                    ToolTip="Pause"
-                    Command="{Binding Pause}"
-                    Style="{StaticResource SquareButtonStyle}">
-                    <metroIcon:Material Kind="Pause" />
-                </Button>
-                <Button
-                    Grid.Column="2"
-                    Width="40"
-                    Height="40"
-                    ToolTip="Stop"
-                    Command="{Binding Stop}"
-                    Style="{StaticResource SquareButtonStyle}">
-                    <metroIcon:Material Kind="Stop" />
-                </Button>
+                    BorderThickness="1"
+                    BorderBrush="{StaticResource AccentBaseColorBrush}"
+                    Padding="5">
+                    <TextBlock 
+                        Text="{Binding Watch}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontSize="18"
+                        FontFamily="Courier New"/>
+                </Border>
             </Grid>
             <Separator
                 Margin="0, 20, 0, 10"

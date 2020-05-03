@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Threading;
 using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
 using DirectoryMonitoring.Studio.Message;
@@ -16,11 +17,29 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private const bool SCAN_PAUSE = false;
 
+        private const int HOUR_LIMIT = 1;
+
+        private const int MINUTE_LIMIT = 0;
+
+        private const int SECOND_LIMIT = 0;
+
+        private const int TIMER_SECOND = 1;
+
+        private const string DATETIME_FORMAT = @"hh\:mm\:ss";
+
+        private const string DEFAULT_TIMER = "00:00:00";
+
         private const string ERROR_EVENT_TYPE = "Error";
 
         private const string ERROR_TITLE = "Watcher error";
 
         private const string ERROR_DESCRIPTION = "The specified path is not valid: ";
+
+        private const string TIME_LIMIT_TITLE = "Monitoring completed";
+
+        private const string TIME_LIMIT_MSG_PART_1 = "Monitoring is completed becouse the execution time has exceeded ";
+
+        private const string TIME_LIMIT_MSG_PART_2 = " hours";
 
         #endregion
 
@@ -60,6 +79,16 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private string filter;
 
+        private string watch;
+
+        private double counterMiliseconds;
+
+        private TimeSpan perfomanceLimit;
+
+        private EventHandler timerEventHandler;
+
+        private DispatcherTimer timer;
+
         private FileSystemWatcher watcher;
 
         #endregion
@@ -76,6 +105,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
             filterFileName = true;
             filterDirectory = true;
             filterLastWrite = true;
+            watch = DEFAULT_TIMER;
+            perfomanceLimit = new TimeSpan(HOUR_LIMIT, MINUTE_LIMIT, SECOND_LIMIT);
             monitoringPath = string.Empty;
         }
 
@@ -173,6 +204,12 @@ namespace DirectoryMonitoring.Studio.ViewModel
             set => SetValue(ref filterSize, value);
         }
 
+        public string Watch
+        {
+            get => watch;
+            set => SetValue(ref watch, value);
+        }
+
         public string Filter
         {
             get => filter;
@@ -197,11 +234,14 @@ namespace DirectoryMonitoring.Studio.ViewModel
             {
                 if (watcher == null)
                 {
+
+                    StartTimer();
                     SendLockSelectPath();
                     watcher = new FileSystemWatcher();
                 }
                 else
                 {
+                    ContinueTimer();
                     EventStackDedubscribe();
                 }
 
@@ -216,6 +256,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
             {
                 var description = $"{ERROR_DESCRIPTION}{monitoringPath}";
 
+                StopTimer();
                 DialogHelper.MessageBox(ERROR_TITLE, description);
                 ScanCanceled = true;
                 monitoringPath = string.Empty;
@@ -230,7 +271,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             return scanCanceled 
                    && monitoringPath.Equals(string.Empty) == false
-                   && CheckSelectedEvent();
+                   && CheckSelectedEvent()
+                   && CheckSelectedNotifyFilter();
         }
 
         #endregion
@@ -245,6 +287,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         {
             ScanCanceled = true;
             watcher.EnableRaisingEvents = SCAN_PAUSE;
+            PauseTimer();
         }
 
         private bool CanPause(object commandParameter)
@@ -262,6 +305,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void OnStop(object commandParameter)
         {
+            StopTimer();
             ScanCanceled = true;
             SendLockSelectPath();
             EventStackDedubscribe();
@@ -346,6 +390,18 @@ namespace DirectoryMonitoring.Studio.ViewModel
                    || isRename;
         }
 
+        private bool CheckSelectedNotifyFilter()
+        {
+            return filterAttribute
+                   || filterDirectory
+                   || filterCreationTime
+                   || filterFileName
+                   || filterLastAccess
+                   || filterLastWrite
+                   || filterSecurity
+                   || filterSize;
+        }
+
         private void DirectoryEventHandler(object sender, FileSystemEventArgs e)
         {
             SendLogToSave(e.ChangeType.ToString(), e.FullPath, DateTime.Now);
@@ -364,6 +420,53 @@ namespace DirectoryMonitoring.Studio.ViewModel
             {
                 Messenger.Default.Send<AddLogItemMessage>(message);
             });
+        }
+
+        private void StartTimer()
+        {
+            counterMiliseconds = 0;
+            timerEventHandler = new EventHandler(TimerTick);
+            timer = new DispatcherTimer();
+            timer.Tick += timerEventHandler;
+            timer.Interval = TimeSpan.FromSeconds(TIMER_SECOND);
+            timer.Start();
+        }
+
+        private void ContinueTimer()
+        {
+            timer.Start();
+        }
+
+        private void PauseTimer()
+        {
+            timer.Stop();
+        }
+
+        private void StopTimer()
+        {
+            timer.Stop();
+            timer.Tick -= timerEventHandler;
+            Watch = DEFAULT_TIMER;
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            counterMiliseconds++;
+
+            var timeSpan = TimeSpan.FromSeconds(counterMiliseconds);
+
+            if(timeSpan >= perfomanceLimit)
+            {
+                var message = $"{TIME_LIMIT_MSG_PART_1}{HOUR_LIMIT}{TIME_LIMIT_MSG_PART_2}";
+
+                OnStop(sender);
+                RelayCommand.RaiseCanExecuteChanged();
+                DialogHelper.MessageBox(TIME_LIMIT_TITLE, message);
+                
+                return;
+            }
+
+            Watch = timeSpan.ToString(DATETIME_FORMAT);
         }
 
         #endregion
