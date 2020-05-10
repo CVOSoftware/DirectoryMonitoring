@@ -1,6 +1,7 @@
 # DirectoryMonitoring
 
 ### Description
+Using the program, you can monitor the state of the file system by intercepting its events. It is possible to configure filters for a more accurate and in-depth analysis of the system. The results are displayed in the form of a list of logs and a dynamically generated chart. At the end of monitoring, the received logs can be exported.
 
 ### Install
 To work correctly, it must be installed .NET Framework 4.8. The program itself is delivered without an installer and is portable.
