@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Windows;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using MVVMLight.Messaging;
-using DirectoryMonitoring.Studio.Base;
-using DirectoryMonitoring.Studio.Message;
-using DirectoryMonitoring.Studio.Helper;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using MVVMLight.Messaging;
+using LiveCharts;
+using DirectoryMonitoring.Studio.Base;
+using DirectoryMonitoring.Studio.Message;
+using DirectoryMonitoring.Studio.Helper;
+using DirectoryMonitoring.Studio.Chart;
+using System.Windows.Media;
 
 namespace DirectoryMonitoring.Studio.ViewModel
 {
@@ -21,6 +25,16 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private const string LABEL = "Saved to path:";
 
+        private const string EVENT_CHANGE = "Changed";
+
+        private const string EVENT_CREATE = "Created";
+
+        private const string EVENT_DELETE = "Deleted";
+
+        private const string EVENT_ERROR = "Error";
+
+        private const string EVENT_RENAME = "Renamed";
+
         #endregion
 
         #region Field
@@ -30,6 +44,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private bool autoScroll;
 
         private bool saving;
+
+        private Dictionary<string, ChartData> cache;
 
         #endregion
 
@@ -41,6 +57,9 @@ namespace DirectoryMonitoring.Studio.ViewModel
             Messenger.Default.Register<NotifyScanCompleteMessage>(this, ScanCanceled);
             Messenger.Default.Register<ClearLogsMessage>(this, ClearLogsHandler);
             Messenger.Default.Register<SaveLogMessage>(this, SaveLogHandler);
+            Messenger.Default.Register<UpdateLogChartsMessage>(this, UpdateLogCharts);
+
+            InitializeCharts();
 
             saving = true;
             Logs = new ObservableCollection<LogViewModel>();
@@ -56,13 +75,15 @@ namespace DirectoryMonitoring.Studio.ViewModel
             set => SetValue(ref autoScroll, value);
         }
 
+        public SeriesCollection Series { get; private set; }
+
         public ObservableCollection<LogViewModel> Logs { get; private set; }
 
         #endregion
 
         #region Command
 
-        #region Save
+        #region Clear
 
         private RelayCommand clear;
 
@@ -89,6 +110,22 @@ namespace DirectoryMonitoring.Studio.ViewModel
             var log = new LogViewModel(message.FileEvent, message.Path, message.Timestamp);
 
             Logs.Add(log);
+
+            if (cache.TryGetValue(message.FileEvent, out var data))
+            {
+                data.Count++;
+            }
+        }
+
+        private void UpdateLogCharts(UpdateLogChartsMessage message)
+        {
+            foreach (var item in cache)
+            {
+                if(item.Value.Count > 0)
+                {
+                    item.Value.UpdateChart();
+                }
+            }
         }
 
         private void ScanCanceled(NotifyScanCompleteMessage message)
@@ -100,7 +137,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         }
 
         private void ClearLogsHandler(ClearLogsMessage message)
-        {
+         {
             ClearLogs();
         }
 
@@ -138,10 +175,39 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         #region Other methods
 
+        private void InitializeCharts()
+        {
+            Series = new SeriesCollection();
+            cache = new Dictionary<string, ChartData>();
+
+            cache.Add(EVENT_CHANGE, new ChartData(Brushes.LightBlue));
+            cache.Add(EVENT_CREATE, new ChartData(Brushes.Green));
+            cache.Add(EVENT_DELETE, new ChartData(Brushes.Orange));
+            cache.Add(EVENT_ERROR, new ChartData(Brushes.Red));
+            cache.Add(EVENT_RENAME, new ChartData(Brushes.Violet));
+
+            foreach(var item in cache)
+            {
+                Series.Add(item.Value.Series);
+            }
+        }
+
         private void ClearLogs()
         {
             Logs.Clear();
+            ClearChartsCache();
+
             Messenger.Default.Send<ClearedLogsMessage>(new ClearedLogsMessage(false));
+            Messenger.Default.Send<NotifyClearlogMessage>(NotifyClearlogMessage.Instance);
+        }
+
+        private void ClearChartsCache()
+        {
+            foreach (var item in cache)
+            {
+                item.Value.Count = 0;
+                item.Value.Series.Values.Clear();
+            }
         }
 
         #endregion

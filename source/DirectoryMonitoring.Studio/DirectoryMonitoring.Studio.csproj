@@ -35,6 +35,14 @@
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
       <Private>False</Private>
@@ -81,8 +89,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Chart\ChartData.cs" />
     <Compile Include="Converter\FileEventToBrushConverter.cs" />
+    <Compile Include="Message\NotifyClearlogMessage.cs" />
     <Compile Include="Message\ResetSelectedPathMessage.cs" />
+    <Compile Include="Message\UpdateLogChartsMessage.cs" />
     <Compile Include="View\SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>
@@ -204,6 +215,8 @@
     <copy SourceFiles="..\packages\MVVMLight.Messaging.1.0.0.0\lib\net40\MVVMLight.Messaging.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll" DestinationFolder="$(OutDir)lib" />
+    <copy SourceFiles="..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\MahApps.Metro.IconPacks.Material.4.0.0\lib\net47\MahApps.Metro.IconPacks.Core.dll" DestinationFolder="$(OutDir)lib" />
     <copy SourceFiles="..\packages\MahApps.Metro.IconPacks.Material.4.0.0\lib\net47\MahApps.Metro.IconPacks.Material.dll" DestinationFolder="$(OutDir)lib" />

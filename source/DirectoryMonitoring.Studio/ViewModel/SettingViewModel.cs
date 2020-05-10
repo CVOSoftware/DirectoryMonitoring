@@ -17,6 +17,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private const bool SCAN_PAUSE = false;
 
+        private const int LIMIT_LOG_COUNT = 5000;
+
         private const int HOUR_LIMIT = 1;
 
         private const int MINUTE_LIMIT = 0;
@@ -35,11 +37,15 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private const string ERROR_DESCRIPTION = "The specified path is not valid: ";
 
-        private const string TIME_LIMIT_TITLE = "Monitoring completed";
+        private const string LIMIT_TITLE = "Monitoring completed";
 
-        private const string TIME_LIMIT_MSG_PART_1 = "Monitoring is completed becouse the execution time has exceeded ";
+        private const string TIME_LIMIT_MSG_PART_1 = "Monitoring is completed because the execution time has exceeded ";
 
         private const string TIME_LIMIT_MSG_PART_2 = " hours";
+
+        private const string LOG_LIMIT_MSG_PART_1 = "Monitoring is completed because the log limit of ";
+
+        private const string LOG_LIMIT_MSG_PART_2 = " has been reached";
 
         #endregion
 
@@ -75,6 +81,8 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private bool filterSize;
 
+        private int logCount;
+
         private string monitoringPath;
 
         private string filter;
@@ -98,6 +106,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
         public SettingViewModel()
         {
             Messenger.Default.Register<SelectMonitoringPathMessage>(this, SetSelectedPath);
+            Messenger.Default.Register<NotifyClearlogMessage>(this, ClearLogs);
 
             scanCanceled = true;
             isCreate = true;
@@ -234,9 +243,9 @@ namespace DirectoryMonitoring.Studio.ViewModel
             {
                 if (watcher == null)
                 {
-
                     StartTimer();
                     SendLockSelectPath();
+                    Messenger.Default.Send<ClearLogsMessage>(ClearLogsMessage.Instance);
                     watcher = new FileSystemWatcher();
                 }
                 else
@@ -309,6 +318,7 @@ namespace DirectoryMonitoring.Studio.ViewModel
             ScanCanceled = true;
             SendLockSelectPath();
             EventStackDedubscribe();
+            logCount = 0;
             watcher.EnableRaisingEvents = SCAN_PAUSE;
             watcher.Dispose();
             watcher = null;
@@ -329,6 +339,11 @@ namespace DirectoryMonitoring.Studio.ViewModel
         private void SetSelectedPath(SelectMonitoringPathMessage message)
         {
             monitoringPath = message.SelectedPath;
+        }
+
+        private void ClearLogs(NotifyClearlogMessage message)
+        {
+            logCount = 0;
         }
 
         #endregion
@@ -414,12 +429,28 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
         private void SendLogToSave(string fileEvent, string path, DateTime timestamp)
         {
+            if (logCount >= LIMIT_LOG_COUNT)
+            {
+                var dialogMessage = $"{LOG_LIMIT_MSG_PART_1}{LIMIT_LOG_COUNT}{LOG_LIMIT_MSG_PART_2}";
+
+                OnStop(this);
+                RelayCommand.RaiseCanExecuteChanged();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    DialogHelper.MessageBox(LIMIT_TITLE, dialogMessage);
+                });
+
+                return;
+            }
+
             var message = new AddLogItemMessage(fileEvent, path, timestamp);
 
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Messenger.Default.Send<AddLogItemMessage>(message);
             });
+
+            logCount++;
         }
 
         private void StartTimer()
@@ -457,14 +488,16 @@ namespace DirectoryMonitoring.Studio.ViewModel
 
             if(timeSpan >= perfomanceLimit)
             {
-                var message = $"{TIME_LIMIT_MSG_PART_1}{HOUR_LIMIT}{TIME_LIMIT_MSG_PART_2}";
+                var dialogMessage = $"{TIME_LIMIT_MSG_PART_1}{HOUR_LIMIT}{TIME_LIMIT_MSG_PART_2}";
 
                 OnStop(sender);
                 RelayCommand.RaiseCanExecuteChanged();
-                DialogHelper.MessageBox(TIME_LIMIT_TITLE, message);
+                DialogHelper.MessageBox(LIMIT_TITLE, dialogMessage);
                 
                 return;
             }
+
+            Messenger.Default.Send<UpdateLogChartsMessage>(new UpdateLogChartsMessage());
 
             Watch = timeSpan.ToString(DATETIME_FORMAT);
         }

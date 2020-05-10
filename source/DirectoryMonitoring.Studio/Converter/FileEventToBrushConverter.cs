@@ -13,9 +13,9 @@ namespace DirectoryMonitoring.Studio.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is string fileEvent)
+            if(value is string eventType)
             {
-                switch(fileEvent)
+                switch(eventType)
                 {
                     case "Changed":
                         return new SolidColorBrush(Colors.LightBlue);

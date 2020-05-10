@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using MahApps.Metro.Controls;
-using DirectoryMonitoring.Studio.ViewModel;
-using DirectoryMonitoring.Studio.View;
 using MahApps.Metro.Controls.Dialogs;
 
 namespace DirectoryMonitoring.Studio.Helper

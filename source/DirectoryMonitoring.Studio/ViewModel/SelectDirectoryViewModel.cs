@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MVVMLight.Messaging;
+﻿using MVVMLight.Messaging;
 using DirectoryMonitoring.Studio.Base;
 using DirectoryMonitoring.Studio.Message;
 using DirectoryMonitoring.Studio.Helper;

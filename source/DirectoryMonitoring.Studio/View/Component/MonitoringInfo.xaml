@@ -7,6 +7,7 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:b="clr-namespace:DirectoryMonitoring.Studio.Behavior"
     xmlns:c="clr-namespace:DirectoryMonitoring.Studio.Converter"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:local="clr-namespace:DirectoryMonitoring.Studio.View.Component"
     mc:Ignorable="d" 
     d:DesignHeight="450" 
@@ -27,16 +28,23 @@
                 <b:ScrollToEndBehavior/>
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="File event" CellTemplate="{StaticResource DataTemplate/DataGrid/Column/FileEvent}"/> 
+                <DataGridTemplateColumn Header="File event" CellTemplate="{StaticResource DataTemplate/DataGrid/Column/FileEvent}"/>
                 <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}"/>
                 <DataGridTextColumn Header="Path" Binding="{Binding Path}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Separator 
+        <Border 
             Grid.Row="1" 
-            BorderThickness="0, 1, 0, 0" 
-            BorderBrush="{StaticResource AccentBaseColorBrush}"
-            Margin="0, 10, 0, 0"/>
+            Margin="0, 10, 0, 0"
+            Padding="5"
+            Height="200"
+            BorderThickness="0, 1" 
+            BorderBrush="{StaticResource AccentBaseColorBrush}">
+            <lvc:CartesianChart 
+                Series="{Binding Series}"
+                DisableAnimations="False"
+                DataTooltip="{x:Null}"/>
+        </Border>
         <StackPanel 
             Orientation="Horizontal" 
             Grid.Row="2">
