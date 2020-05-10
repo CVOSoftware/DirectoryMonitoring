@@ -8,5 +8,4 @@
         <Setter Property="TitleCaps" Value="False"/>
         <Setter Property="IconTemplate" Value="{StaticResource DataTemplate/MainWindow/Icon}"/>
     </Style>
-
 </ResourceDictionary>
